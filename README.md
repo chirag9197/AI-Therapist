@@ -1,34 +1,41 @@
-# Airoh - AI Therapist
+# AI-Therapist 🧠
 
-An innovative AI-powered therapy platform designed to provide accessible mental health support and guidance.
+AI-Therapist is an AI-powered platform designed to provide accessible mental health support and guidance. This web-based application utilizes the power of artificial intelligence to facilitate supportive conversations and offer mental health resources to users. It presents a safe and confidential space for users to express their thoughts and feelings while receiving empathetic responses and practical guidance.
 
-![](public/Airoh.gif)
+## 🎯 Project Purpose and Background
 
-## Description
+The goal of this project is to make mental health support more accessible and available to everyone. It aims to bridge the gap between individuals seeking help and affordable, readily-available mental health services. The primary users of this application are individuals seeking mental health support or guidance, mental health professionals, and AI enthusiasts.
 
-This is a web-based application that leverages artificial intelligence to provide supportive conversations and mental health resources to users. The platform offers a safe, confidential space for users to discuss their thoughts and feelings while receiving empathetic responses and practical guidance.
+## 🌟 Features and Functionality
 
-## Features
+- AI-Powered Conversations 🤖: Leveraging artificial intelligence to simulate human-like conversations and provide empathetic responses.
+- Confidential Interactions 🔒: Ensuring user privacy and confidentiality throughout the interaction.
+- Responsive Design 📱: Adaptable to various devices, providing optimal viewing and interaction experience for the user.
+- Therapeutic Approaches 💡: Incorporating evidence-based therapeutic approaches into the AI algorithms.
+- Progress Tracking 📈: Enabling users to monitor their progress and mood over time.
 
-- 🤖 AI-powered conversational therapy
-- 🔒 Secure and confidential interactions
-- 📱 Responsive design for all devices
-- 💡 Evidence-based therapeutic approaches
-- 📊 Progress tracking and mood monitoring
+## 🛠️ Technology Stack
 
-## Getting Started
+- Languages: TypeScript (5.2.2), JavaScript, HTML, CSS, PLpgSQL
+- Frameworks: React (rc), Next.js (15.1.4)
+- AI Integration: Deepseek
+- Authentication: Clerk
+- Styling: Tailwind CSS (3.3.3)
+- Testing: Jest
+
+## 🔧 Installation and Setup
 
 ### Prerequisites
 
 - Node.js (v18 or higher)
 - npm or yarn package manager
 
-### Installation
+### Steps
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/aitherapist.git
-cd aitherapist
+git clone https://github.com/chirag9197/AI-Therapist.git
+cd AI-Therapist
 ```
 
 2. Install dependencies:
@@ -57,31 +64,33 @@ npm run dev
 
 The application will be available at `http://localhost:3000`
 
-## Usage
+## 🚀 Usage Examples
 
 1. Create an account or log in
 2. Start a new therapy session
 3. Engage in conversation with the AI therapist
-4. Access resources and track your progress (In progress)
+4. Access resources and track your progress
 
-## Technology Stack
+## 📁 Project Structure
 
-- Frontend: Next.js, React, TypeScript
-- Styling: Tailwind CSS
-- AI Integration: Deepseek
-- Authentication: Clerk
+- Configuration files: .eslintrc.json, .gitignore, components.json, next.config.js, package.json, postcss.config.js, tsconfig.json, webpack.config.js
+- Source code files: groq-test.js, middleware.ts, next-env.d.ts, tailwind.config.ts
 
-## License
+## 🤝 Contributing Guidelines
+
+We encourage you to contribute to this project! Please follow the standard GitHub pull request process and ensure your code adheres to the existing style.
+
+## 📜 License Information
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Contact
+## 💌 Contact
 
-Your Name - Srinath Warrier srinathwarriertech@gmail.com
+Chirag - chirag9197@gmail.com
 
-Project Link: [https://github.com/srinathwarriertech/aitherapist](https://github.com/srinathwarriertech/aitherapist)
+Project Link: [https://github.com/chirag9197/AI-Therapist](https://github.com/chirag9197/AI-Therapist)
 
-## Acknowledgments
+## 🙏 Acknowledgments
 
 - Groq and Deepseek for providing the AI capabilities
 - The mental health professional community for guidance
