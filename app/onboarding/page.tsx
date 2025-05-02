@@ -69,9 +69,8 @@ const goals = [
 
 export default function ProfileForm() {
   const { isLoaded, isSignedIn, user } = useUser();
-  // 1. Define your form.
   const [isNavigating, setIsNavigating] = useState(false);
-  // 1. Define your form.
+  const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1)
   const [mentalHealthFrequency, setMentalHealthFrequency] = useState([
     { id: "not_at_all", label: "Not at all" },
@@ -122,7 +121,17 @@ export default function ProfileForm() {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof onboardingFormSchema>) {
     try {
-      console.log("Inside onSubmit", values)
+      setError(null);
+      console.log("Inside onSubmit", values);
+      
+      // Validate form values before submission
+      const validationResult = onboardingFormSchema.safeParse(values);
+      if (!validationResult.success) {
+        console.error('Form validation error:', validationResult.error);
+        setError('Please check your form inputs and try again.');
+        return;
+      }
+
       setFormValues({
         ...values,
         gender: values.gender ?? '',
@@ -131,12 +140,14 @@ export default function ProfileForm() {
         pastDiagnosis: values.pastDiagnosis ?? '',
         feeling_down: values.feeling_down ?? '',
         userId: values.userId ?? '',
-      })
-      console.log(values)
+      });
+
       setIsNavigating(true);
       const result = await onboardingFormSubmit(values);
       
       if (!result.success) {
+        console.error('Form submission error:', result.error);
+        setError(result.message || 'Failed to submit form. Please try again.');
         setIsNavigating(false);
         return;
       }
@@ -152,9 +163,10 @@ export default function ProfileForm() {
       
       // Reset the form state so it works on next visit
       form.reset();
-      router.push('/results')
+      router.push('/results');
     } catch (error) {
       console.error('Submission error:', error);
+      setError('An unexpected error occurred. Please try again.');
       setIsNavigating(false);
     }
   }
@@ -202,6 +214,12 @@ export default function ProfileForm() {
         </div>
       )}
       <div className="max-w-2xl mx-auto p-8 bg-white rounded-xl shadow-lg">
+        {error && (
+          <div className="mb-4 p-4 bg-red-100 border border-red-400 rounded text-red-700">
+            <p className="font-semibold">Error:</p>
+            <p>{error}</p>
+          </div>
+        )}
         {/* Global error summary */}
         {Object.keys(form.formState.errors).length > 0 && (
           <div className="mb-4 p-4 bg-red-100 border border-red-400 rounded text-red-700">

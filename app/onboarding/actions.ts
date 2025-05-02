@@ -19,11 +19,25 @@ export async function onboardingFormSubmit(
   values: z.infer<typeof onboardingFormSchema>
 ) {
   try {
+    // Validate the input data
+    const validationResult = onboardingFormSchema.safeParse(values);
+    if (!validationResult.success) {
+      console.error('Validation error:', validationResult.error);
+      return { 
+        success: false, 
+        message: "Invalid form data",
+        error: validationResult.error 
+      };
+    }
+
     // Try to get current user, but make it optional
-    const user = await currentUser().catch(() => null);
+    const user = await currentUser().catch((error) => {
+      console.error('Error getting current user:', error);
+      return null;
+    });
     
     if (user) {
-      console.log("id:" + user.id);
+      console.log("User ID:", user.id);
       values.userId = user.id;
     } else {
       // Use a default ID if no user is available
@@ -31,18 +45,53 @@ export async function onboardingFormSubmit(
       console.log("Using anonymous ID:", values.userId);
     }
 
+    // Ensure all required fields are present
+    const formData = {
+      onboardingResponse: {
+        ...values,
+        userId: values.userId || 'anonymous-' + Date.now().toString(),
+        createdAt: new Date().toISOString()
+      }
+    };
+
+    console.log('Attempting to insert data:', JSON.stringify(formData, null, 2));
+
     const { data, error } = await supabase
       .from('OnboardingFormResponses')
-      .insert({ onboardingResponse: values })
+      .insert(formData)
       .select();
 
-    if (error) console.log('Error inserting data:' + JSON.stringify(error));
-    if (data) console.log('Inserted data:' + JSON.stringify(data));
-    
-    return { success: !error, message: error ? "Failed to save data" : "Data saved successfully" };
+    if (error) {
+      console.error('Supabase error:', error);
+      return { 
+        success: false, 
+        message: "Failed to save data",
+        error: error.message 
+      };
+    }
+
+    if (!data) {
+      console.error('No data returned from Supabase');
+      return { 
+        success: false, 
+        message: "No data returned from database" 
+      };
+    }
+
+    console.log('Successfully inserted data:', JSON.stringify(data, null, 2));
+    return { 
+      success: true, 
+      message: "Data saved successfully",
+      data 
+    };
+
   } catch (e) {
-    console.error('Error in onboardingFormSubmit:', e);
-    return { success: false, message: "Failed to insert onboardingform" };
+    console.error('Unexpected error in onboardingFormSubmit:', e);
+    return { 
+      success: false, 
+      message: "An unexpected error occurred",
+      error: e instanceof Error ? e.message : 'Unknown error'
+    };
   }
 }
 
