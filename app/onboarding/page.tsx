@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation"
 import { onboardingFormSubmit } from './actions'
 import { processOnboardingResponses } from './onboardingAlgorithm'
 import { useUser } from "@clerk/nextjs";
-
+import { onboardingFormSchema } from "@/app/lib/schemas";
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -67,44 +67,6 @@ const goals = [
   },
 ] as const
 
-export const formSchema = z.object({
-  // Demographics
-  age: z.number().min(10).max(120),
-  gender: z.string().optional(),
-  occupation: z.string().optional(),
-  relationshipStatus: z.string().optional(),
-
-  // Presenting Concerns
-  emotionalState: z.number().min(1).max(10),
-  stressFrequency: z.enum(["Never", "Rarely", "Sometimes", "Often", "Always"]),
-
-  // Mental Health History
-  priorTherapy: z.enum(["Yes", "No", "Prefer not to say"]),
-  medication: z.enum(["Yes", "No", "Prefer not to say"]),
-  pastDiagnosis: z.string().optional(),
-
-  // Wellbeing & Lifestyle
-  sleepQuality: z.enum(["Poor", "Fair", "Good", "Excellent"]),
-  appetite: z.enum(["Decreased", "Normal", "Increased"]),
-  support: z.enum(["Yes", "No", "Somewhat"]),
-  exerciseFrequency: z.enum(["Never", "Occasionally", "Regularly"]),
-
-  // Goals & Preferences
-  goals: z.array(z.string()).min(1, { message: "Please select at least one goal" }),
-  preferredSupport: z.enum(["Chat", "Self-help resources", "Both"]),
-
-  // Safety Screening
-  selfHarm: z.enum(["Yes", "No", "Prefer not to say"]),
-  crisisHelp: z.enum(["Yes", "No"]).optional(),
-
-  // Existing fields
-  productivity_impact: z.number().min(0).max(7),
-  work_missed: z.number().min(0).max(7),
-  relationship_issues: z.number().min(0).max(7),
-  feeling_down: z.string().min(1, { message: "Please select an option" }),
-  userId: z.string(),
-})
-
 export default function ProfileForm() {
   const { isLoaded, isSignedIn, user } = useUser();
   // 1. Define your form.
@@ -117,7 +79,7 @@ export default function ProfileForm() {
     { id: "more_than_half", label: "More than half the days" },
     { id: "nearly_every_day", label: "Nearly every day" },
   ])
-  const [formValues, setFormValues] = useState<z.infer<typeof formSchema>>({
+  const [formValues, setFormValues] = useState<z.infer<typeof onboardingFormSchema>>({
   // Demographics
   age: 25,
   gender: '',
@@ -148,8 +110,8 @@ export default function ProfileForm() {
   feeling_down: '',
   userId: '',
 })
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof onboardingFormSchema>>({
+    resolver: zodResolver(onboardingFormSchema),
     defaultValues: {
       ...formValues,
       userId: user?.id || "",
@@ -158,7 +120,7 @@ export default function ProfileForm() {
   const router = useRouter()
  
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof onboardingFormSchema>) {
     try {
       console.log("Inside onSubmit", values)
       setFormValues({

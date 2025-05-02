@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createClient } from '@supabase/supabase-js';
 import { currentUser } from '@clerk/nextjs/server'
-import { formSchema} from './page';
+import { onboardingFormSchema } from '@/app/lib/schemas';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -16,7 +16,7 @@ if (!supabaseUrl || !supabaseAnonKey) {
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export async function onboardingFormSubmit(
-  values: z.infer<typeof formSchema>
+  values: z.infer<typeof onboardingFormSchema>
 ) {
   try {
     // Try to get current user, but make it optional
